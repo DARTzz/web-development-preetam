@@ -1,0 +1,457 @@
+> HTML
+
+>> Facts :
+
+- Home Page : index.html
+
+- Live server extension for vs code for updating the webpage at real time.(and also for simulating a client server architecture.)
+		- but the code must have proper html structure in order for live refresh.
+
+- HTML structure
+
+<!DOCTYPE html>                   ---> HTML version
+<html>                            ---> Root Element
+	<head>						  ---> Information of page
+		<title> Document </title> ---> Page title
+		....META,Links
+	</head>
+	<body>                        ---> What will be displayed on the page
+		....Page content
+	</body>
+</html>
+
+- Heading Tags : ignored but have very big significance, actually heading tags are not just size difference but they are actually how important the tags are. eg.  H1 tag when read by browser or bot will be considered much important tag than h2 in context. Hence Heading tags are actually telling how important a heading is so this should be kept in mind HEADING TAGS ARE NOT JUST SIZE BUT ALSO PRIORITY AND IMPORTANCE LEVEL OF HEADINGS.
+
+NOTE : for text size audgestment dont use heading for that we can use <font size="12">
+
+- Tags within tags are its children(Nesting)
+
+- when code is converted into page by browser, its called PARSING
+
+- Exclamation(!) ---> expanded html format(using EMMET)
+- EMMET is an autocomplete feature by default in vs code.
+
+- Dummy text : text that we add for experimenting how the text will look. 
+		- lorem ipsum abbriviation in vscode will get the lorum epsum text.
+		- lorem50 will bring 50 text of lorem epsum (this is done by emmit again.)
+
+- <br> is a tag and <br><br/> is an element.element comprises of starting tag and ending tag.
+
+- Images
+		- we can resize image using the width and height attributes, but its much preferable to resize the image using an external software so as to keep the code size compact.
+
+		- if we only give width or height , the other is audjested keeping image ratio in perspective.
+
+- Link
+		- a link(<a>) can have image text within to make an image link... :)
+
+		- a here stands for Anchor tag
+
+		- setting attribute target = "_blank" in link attribute, the link opens in new browser tab.
+				also _main will work there
+
+		- href attribute, we can give url or even relative page location.
+
+		- in href, we can even use id of a tag to navigate to that tag on the same page.(eg href="#tagID")
+
+>> Links are of two types : RELATIVE AND ABSOLUTE
+				> absolute are global links that can be connected to eg. wikipedia.com wheras 
+				> relative links are the links relative to the current project directory
+						eg. giving image src="./pretam.jpg" this is a relative link
+
+(copying a website html code dosent work because it conains various links to relative links and resources which are present only in the relative directory of where the page is being fetched from)
+
+- ID : in a tag, we can give id attribute which can help identify the tag uniquely
+		- this can be used to navigate to the tag (like seen in using link)
+
+
+> It is very important to note that strong and emphasis bold and italic the text which can be achieved using css mainly, but, strong and bold are used to mark important parts rather that visual purpose, eg, strong and emphasised text will be treated differently by screenreaders.
+				
+				CSS should be used for making bold for visual purpose because, its HTML is just markup and structure and everything visual related is to be done in dfferent file using css.
+
+- Special symbols : 
+		html has special characters that can be accessed using the &characterCode; format eg. &copy;
+		is the code for copyright symbol.
+
+- Lists : 
+		ordered and unordered list.
+		lists can be nested also
+			- there is two ways of nesting list elements, either by creating list inside of <li> tag or after ending the <li> tag.
+
+- Buttons :
+		buttons have attribute type, which determines the type for button eg. if we want to submit a request, we make type="submit"
+		other way of making button : <input type="submit" value="Click Here">
+
+- Forms :
+		forms are generally for collecting information but since we are working on frontend rn, no need for the submission part.
+		> in form tag, action attribute is given the backend name where the file is going  eg. 
+		<form action="file.php"> 
+
+- Table : 
+		> table has caption attribute that describes the content of the table
+		> table has thead and tbody for semantics
+		> tr are also there
+				> tr is parents of td and th
+		> note that we can even put the caption inside of thead
+
+			> colspan : colspan is used to increase the number of elements a th can take under
+						eg. <th colspan="3"> this will be above 3 columns
+
+- Label and Input : 
+
+		forms have input boxes that can take text email etc and label in front that describe the input box.
+		input is a single tag attribute.
+		- input has attribute like type, and type attribute can take the type of input we want to take eg. 
+			input = "text", input = "password", input = "email"
+			in case of password, the input takes will hide what user typed and in case of email, email format text will only be accepted. 
+		- input also has attribute , placeholder which will take the text initially in the input box.
+		- value attribute will hard type whatever the valur of attribute is in the input text box.
+	> difference between input and placeholder is that placeholder will dissapear assoon as user starts typing whereas input will stay.
+
+		- input also has name attribute which are associated with submitting the data(backend stuff that we will look into later.)
+
+- Text Area :
+		- textarea has attributes like cols and rows for taking in the number of rows and columns for the text area
+
+>> note , i have noticed that some tags automatically go to next line eg, paragraphs etc whereas some come next to the previous eg. input endinglements come next to the lable before them(this is future me, and this is kinda lame, didnt know about display property. LOL)
+
+- input tag and radio buttons :
+		- input tag has attribute type which can be of type "radio"
+		- making multiple input tags of type radio will make vaious radio buttons
+		- important thing is that for them to work in exclusion of one another, ALL THE INPUT TAGS MUST HAVE THE SAME NAME ATTRIBUTE!!!  why name works and all will be studied later but for the radio buttons are used so that only one can be selected and to cateogorise various buttons under one, their name attributes must be same eg. 
+		<input type="radio" name="buttonSet1" value="java" >java
+		<input type="radio" name="buttonSet1" value="c++">c++ 
+
+		notice that value attribute is set in above so that when the button data is submitted the button selected will have value of java or c++ hardcoded since some data must be returend when we hit the submit button from the radio buttons hence this is one use of value other than hard coding the text in previous examples. We will see how value is used in later when we submit the data
+
+		also in a label, setting the 'label for' attribute as id of a radio button will ensure the even after clicking on the label, the radio button will be selected
+
+- input can have type 
+			- date or datetime-local for calander selection
+			- file
+
+- checkbox checkbox can be made by setting type ="checkbox" in input tag 
+		- we can make the checkboxes with same name also
+		- we can set attribute checked="checked" so that the checkbox is selected by default
+
+- to handle the spacing and format of code 
+		in vs code : download prettier extension
+			- go to settings and switch on Editor: format on save and Editor: format on paste .
+		every time we save, the project will be formatted.
+
+- the head tag contains the information about the page eg. the text type i.e. utf then page size and scaling etc.
+
+- a website is responsive and adaptive when it is able to audgest content according to the website it is playing in. eg. setting img attribute width="100%" will actually make the image size change in accordance to the screen size.!!!(although size changing is not prefered using html and rather done using css)
+
+- if an attribute value contains "" then , we can bind the attribute using single quotes and use "" inside eg. href='./hello"user/hi.jpg'
+
+- pre tag : is very important as it will show that conent within the same way its written in the code hence solving the issues associated with html being whitespace collapsing.
+		pre stands for preformatted text. 
+
+>> HTML SEMANTICS ELEMENTS
+		semantics elements are tags that are not mandatory but important as they help structure the code so that developers and AI can understand it. Below are some such tags
+
+- HEADER MAIN and FOOTER : 
+		> header main and footer are the three ways a page is broken into
+		> this is a general structure seen in most of the pages 
+		> header will contain some generic info about page, searchbar, topics available, links etc
+				and header may look same for various pages as its generic
+		> main will have the content of the page that is page specific
+		> footer will have contacst, links , shortcuts etc.
+		(one good reason to split page into these parts is that when AI or other browser looks at code, it gives distinction since the content is divided into parts)
+
+- Nav tag : Nav tag takes navigational content i.e. links to other pages or parts to same page etc. eg . home, about etc. 
+
+- SECTION ARTICLE and ASIDE :
+		> Section tag is used to split content into various sections, eg on apple website one a single page one section is of phones another is of laptops etc.
+		> article tag is used to cover up if we have written some paragraph or text
+		> aside is used incase of parts that are not main content eg. ads shown in page etc.
+				aside can also be used for side bar or the related posts that are not actual part of the current page.
+
+>> the above is important to make a webpage SEO friendly
+		> SEO is search engine optimisation which determines the traffic that will come to your page.
+			eg. a well optimised page will be suggested on top when searched on search engines
+		> SEO checks : valid links , original content, proper formatted code, non plaguerism, contnent quality etc.
+
+- FIGURE and FIGCAPTION
+		> figure semeantic tag binds self contained content like illustrations, diagrams, photos, code listing etc.
+		> figcaption is a child tag of figure that contains the various captions for the figure
+
+>>> Here they are :
+	<article>	Defines independent, self-contained content
+	<aside>	Defines content aside from the page content
+	<details>	Defines additional details that the user can view or hide
+	<figcaption>	Defines a caption for a <figure> element
+	<figure>	Specifies self-contained content, like illustrations, diagrams, photos, code listings etc
+	<footer>	Defines a footer for a document or section
+	<header>	Specifies a header for a document or section
+	<main>	Specifies the main content of a document
+	<mark>	Defines marked/highlighted text
+	<nav>	Defines navigation links
+	<section>	Defines a section in a document
+	<summary>	Defines a visible heading for a <details> element
+ 	<time>	Defines a date/time
+      <blockquote> used to store italic quotes
+
+NOTE : header and body are not limited to the body of html, this can also be used inside article for the article heading part and body part. And hence this is very handy.
+
+ > inline vs block level elements : 
+ 		 inline elements take only thatmuch space in page as they need eg. label
+ 		 block element take full line even if they are completed in less eg. <p>
+
+- div and span : 
+		> div tag is used to group various tags together so that we can apply attributes to both of them
+			eg. we can group a heading and paragraph and using css we can change size of font for both as the are a single entity
+
+			this is different form semantic tags because scemantics define the content within the tag eg. 
+			<article> will contain text and etc. for the purpose of formating and increasing redability whereas div groups so that various tags can be grouped and treated as one
+
+			div is block level attribute
+
+		> span is also for grouping data but is inline
+
+			so if inline elements are put in div, they will be treated as block level so its better to use span if we want grouped inline elements to stay inline
+
+			NOTE : that if we put block level elements like <p> in span, the content will stay block level hence span is best used with inline elements
+
+- Embeding : 
+		- we can embed other websites within our website 
+		- we use iframe give it width height and src and if the other website allows embedding, vala
+		- websites like google will not allow embedding but bing will and also youtube will
+		(thats how youtube videos are embeded into websites)
+
+- VIDEOS : 
+
+	- to embed a youtube vid in code go to youtue share button and select embed, copy code and paste.
+
+	- video tag helps embed videos
+		we can set non value attribtues like controls,loop autoplay for more functionality
+
+NOTE : some attributes like loop autoplay controls etc are enabled and desabled based on if they are mentioned eg. autoplay="false" will autoplay since autoplay is mentioned to stop autoplay just remove the tag(same goes for disabled tag in input)
+
+- Use strong/em instead of b/i always since <i> and <b> dont have symantic meaning.  
+
+- META TAG : meta tag contains page information and very important
+		there can be many meta tag in one head
+		- meta tags have name and content attribute 
+				- name attribute takes what content tells about the page eg.
+				<meta name="description" content="this is the page description">
+				hence here name tells that the content will have the page description
+	 > description meta is visible under the page title text when searched on a search engine.
+	 		eg. like when we search mkvkings we get a list of search results and top one is mkvkings and below it is page description which was set in meta
+	 > also we can similarly set meta author and meta keywords
+	 > keywords meta should not be used since now seo dont rely on it because of people spamming unrelavant keywords and abusing it.
+
+
+-- IMPORTANT ATTRIBUTES : 
+		> lang attribute in the html tag : used by the browsers and screen reader to check the language of a page.
+
+		> title : title attribute can be given to various tags. in a paragraph tag, we can set title="paragraph title" and when mouse will hover over the paragraph a tooltip will show the title.(kinda handy)
+
+		> href : this is used to contain the address of webpages i.e. Hipertext Reference
+
+		> width and height : for various elements like images, these can be set although css is better used for this.
+
+		> alt in img: is used to display alternate text if image is not available to display.
+
+		> disabled in input : used to disable an input (disabled="disabled")
+
+		> id : specifies a uinque id for an element and two elements will not have the same id
+
+		> src : specifies the URL for an image or resourse(referenced)
+
+		> style : specifies an inline CSS style for an element
+
+		> align in <p> : tells the alignment for text in paragraph tag eg : "left" "center" "right"
+
+		> class : class attribute is used to associate an element with a style sheet.(in css)
+							a tag can have various classes
+
+		> Internationalization Attributes in html tag : 
+				> dir : tells the orientation of page eg. <html dir="rtl"> makes the page right oriented
+																									<html dir="ltr"> makes page left oriented
+
+				> lang : we can specify the language the page uses : <html lang="en-US">
+
+				> xml:lang : alternative to lang, the sml:lang takes ISO-93
+ 											country code eg : <html xml:lang="IN">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>> Tags :
+
+- <h>heading tag</h>
+		- 1 to 6 and using h7 and above is normal text :)
+
+- <p>paragraph tag</p>
+		- White space collapsing is in html. it ignores extra spaces.in paragraph and header both.
+
+- <html>content of an html page</html>
+
+- <img src="location of image" alt="alternate text if image is not present">
+
+- <img src="address" alt="alt text" height="150" width="300">
+
+- <img src="address" width="100%"> ---> will change the image size in response to the window size.
+
+- <!--Comment--> 
+
+- <br> --> is used to adding line break.
+
+- <a href="Url"> LinkText </a>        (opesns link in the current tab)
+
+- <a href="Url" target="_blank"> LinkElement </a>       (Opens link in a new tab)
+
+- <a href="#tagId"> go to target id </a> ---> for navigating to a tag in current html file.
+
+- <a href="#"> ----> link that goes nowhere
+
+- <sup>element</sup> used for superscripting
+
+-	<sub>element</sub> used for subscripting.
+
+- <strong>text</strong> ---> used to highlight important texts eg links etc
+
+- <em>text</em> ---> used to make text italic
+
+- <b> and <i> can also be used to make the text bold and italic respectively.
+
+- <&symbolCode;> ---> for various special symbols.
+
+- <ul type="square"> ----> type is used to change the bullet shape(better done by css)
+		<li>element1</li>
+		<li>element2</li>
+	</ul>
+
+- <ol type="i">  ----> the order will be in roman small
+		<li>element1</li>
+		<li>element2</li>
+	</ol>
+
+- <table>
+		<tr>
+			<th>heading1</th>
+			<th>heading2</th>
+		</tr>
+		<tr>
+			<td>info1</td>
+			<td>info2</td>
+		</tr>
+	</table> ------> tr is for making rows and rows will have different values at different columns, th is for column headin and td if for column data
+
+- <table border="4" cellpadding="2" cellspacing="2" width="100%"> 
+
+- <form action="" method="">
+		<input type="text" name="name" id="">
+		<br>
+		<button type="submit">submit</button>
+	</form> 
+			--------> here action and method arrtibute are for backend so leave them be, input gives an input space in this case type is text so we can type text and finally there is a submit type button for submitting the text in the input box.
+
+- <label for=""> lable text </label> ---> comes before an input tag in a from for describing what the input tag is taking.
+		lable can be used freely also and we can evan use paragraph or heading also before a form
+
+- <input type="email" placeholder="email here" value="preetam@gmail.com">  ---> type and placeholder are self explainatory attributes and value is hard coded data.
+
+- <textarea cols="columns number" rows="rows number"> value can be here</textarea> ---> we can write the text we want to be hard placed in the text area in between the opening and closing tags.
+
+- <input type="checkbox" value="" checked="checked">
+
+- <select name="languages" id="">
+            <option value="javascript">javascript</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+   </select>>           	
+   								----> this is for slidedown menu
+
+- <label for="inputID">Name</label>
+  <input type="text" name="name" id="inputID" /> ---> note that we set for of lable = "name" and name for input also "name" because now when we hover on label, the input will be highlighted
+  this is because for attribute takes the id of the element or which we have setup the lable.
+
+- <font size="3"></font> used for changing the font attributes and can be used to change font size in a paragraph etc.
+
+- <u></u> --> underline
+
+- <strike> </strike>  --> cut the text with a line
+
+- <center></center> --> used to place content at the center
+
+- <link> --> link tag is used in html head to link file with external code like to a css file
+
+					<head>
+						<link rel="stylesheet" type="text/css" href="style.css">
+					</head>
+
+- <big>Big text</big> and <small>Small text</small>
+
+- <header>, <main> and <footer> ----> its just a way of breakingn a page into sections 
+
+- <section>,<article>, <nav>, <aside> -----> again for various parts of content
+
+- <figure> <figcaption> ------> parent and child for images, illustraction, diagrams, code listing
+
+- <figure>
+  	<img src="pic_trulli.jpg" alt="Trulli">
+  	<figcaption>Fig1. - Trulli, Puglia, Italy.</figcaption>
+	</figure>
+
+- <iframe width="560" height ="315" src="https://www.bing.com"> ---> for embeding other websites.
+
+- <video src="preetam.mp4" controls autoplay loop>error</video>
+
+- <meta name="description" content="this is the page description">
+
+- <meta name="keyword" content="keyword1,keyword2...">
+
+- <meta name="author" content="Preetam">
+
+- <meta charset="UTF-8" > ---> used to tell the page character set type.
+
+- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+- <a>Challenges</a> ---> anchor tag without href is plain text, what makes anchor link is href.
+
+- <article> ----> not just for articles but objects also eg, pen, computer.
+
+
+
+
+--------> SEO : seo is mainly based on giving good content.
+
+	some ways to stand out in seo : 
+	  > set nice title, since title will be the actual data about the content of the page
+	  > set good meta discription(ie. <meta name="description" content="page description">)		
+	  		- this discription is visible under page name when searched on search engines
+	  > set a URL slug 
+	  		- url slug is the last part of the url name and that should be page descriptive
+	  		 eg. https://www.google.com/preetam/agjealsj ---> slug is bad
+	  		 			https://www.google.com/preetam/good page descripltion ---> slug is good
+
+	  > set good keywords in meta : (although now its not so imp :( because people spam)
+	  		- <meta name="description" content="SEO, Search engine optimisation,...">
+	  			keywords contain about the content of the page
+
+	  > set favicon : favicon is the small icon that evey page has :) 
+	  		- there are websites for this 
+
+	  > compress images and resources
+
+	  > MINIFY : we can minimise the size of css html and javascript files also !!!!
+	  			- basically minify website will remove all spacing such that the code still makes scence
+
+	  > set alt text always since blind people will get the alt text inplace of image
+
