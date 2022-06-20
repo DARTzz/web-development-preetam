@@ -2088,7 +2088,7 @@ setting auto, will actually stretch the elements to the container size.
 
 NOTE : making too many rows or columns when there are no elements to fill those spots will stretch the container!!!
 
-In grid row and column gap can be given which is dope.
+In grid row and column gap can be given which id dope.
 
 Gridlines : seperate columns and roes , and gridliens for column = no. of columns+1. and same for row gridlines.
 
@@ -2957,14 +2957,17 @@ used to give color to placeholders
 }
 ```
 
-> Links containing numbers and emails :
+> Links containing numbers and emails ,whatsapp etc:
 
 ```html
 <a href="tel:415-201-6370">415-201-6370</a>
 <a href="mailto:hello@omnifood.com">hello@omnifood.com</a>
+<a href="https://wa.me/919876543210/?text=Hi Sam, Whatsup">whatsapp</a>  // for mobile devices
+<a href="https://web.whatsapp.com/send?phone=5541988897799&text&app_absent=0"> whatsapp web</a> // for whatsapp web
 ```
 
 the above 2 can be used for linking a phonenumber and email and will open corresponding apps for phone call and email which is frikin awesome.
+NOTE : there are two seperate links type for whatsapp on app(mobile) and for pc so handle them seperately.
 
 <hr>
 <hr>
@@ -2996,3 +2999,211 @@ img[src="12"] {
     background-color: red;
 }
 ```
+
+<br>
+
+#### Test and Optimization :
+
+1.) making sure website works for all major browsers.
+2.) test the website on actual mobile devices, not just dev tools
+3.) optimize all images in terms of dimensions and file size.
+4.) fix simple accessibility problems.
+5.) Run the LIghthouse performance test in Chrome DevTools and try to fix reported issues
+6.) Think about SEO
+
+### BROWSER SUPPORT and VENDOR PREFIXIS :
+
+previously there was issue and browsers had different stuff but now there are only some issues left :)
+
+NOTE: www.caniuse.com
+
+The issue is that old browsers may not support some featuers like grid and stuff that we use.
+
+eg : =) backdrop-filter : blurs everything that is behind the element this property is used on.
+the backdrop filter is not supported in safari and firefox
+
+IMPORTANT : we can check on caniuse.com that some properties like backdrop-filter can be resolved using -webkit- for some browsers eg. with safari, -webkit- will allow use of backdrop-filter, but there is no way for firefox to support this. similarly to support appearance property in firefox we use -moz-.
+
+```css
+.nav {
+    -webkit-backdrop-filter: blur(10px);
+    -moz-appearance: blur(10px); // moz is for firefox.
+    backdrop-filter: blur(10px);
+}
+```
+
+THESE ARE CALLED **_VENDOR PREFIX._**
+
+on old iphone, old ones, we need to fix grid gap property. for that just copy paste this function for next few years.
+
+```js
+//////////////////////////////////////////////////////////
+// Fixing flexbox gap property missing in some Safari versions
+function checkFlexGap() {
+    var flex = document.createElement("div");
+    flex.style.display = "flex";
+    flex.style.flexDirection = "column";
+    flex.style.rowGap = "1px";
+
+    flex.appendChild(document.createElement("div"));
+    flex.appendChild(document.createElement("div"));
+
+    document.body.appendChild(flex);
+    var isSupported = flex.scrollHeight === 1;
+    flex.parentNode.removeChild(flex);
+    console.log(isSupported);
+
+    if (!isSupported) document.body.classList.add("no-flexbox-gap");
+}
+checkFlexGap();
+```
+
+```css
+.no-flexbox-gap .main-nav-list li:not(:last-child) {
+    margin-right: 4.8rem;
+}
+
+.no-flexbox-gap .list-item:not(:last-child) {
+    margin-bottom: 1.6rem;
+}
+
+.no-flexbox-gap .list-icon:not(:last-child) {
+    margin-right: 1.6rem;
+}
+
+.no-flexbox-gap .delivered-faces {
+    margin-right: 1.6rem;
+}
+
+.no-flexbox-gap .meal-attribute:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.no-flexbox-gap .meal-icon {
+    margin-right: 1.6rem;
+}
+
+.no-flexbox-gap .footer-row div:not(:last-child) {
+    margin-right: 6.4rem;
+}
+
+.no-flexbox-gap .social-links li:not(:last-child) {
+    margin-right: 2.4rem;
+}
+
+.no-flexbox-gap .footer-nav li:not(:last-child) {
+    margin-bottom: 2.4rem;
+}
+
+@media (max-width: 75em) {
+    .no-flexbox-gap .main-nav-list li:not(:last-child) {
+        margin-right: 3.2rem;
+    }
+}
+
+@media (max-width: 59em) {
+    .no-flexbox-gap .main-nav-list li:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 4.8rem;
+    }
+}
+```
+
+Its not rocket science, we just replace gap with margin-right and margin left.
+
+#### LightHouse tool :)
+
+present in the chrome also for testing stuff :)
+this was developed by google.
+
+The tool will tell a lot about the webpage.
+
+#### Favicon and MetaData
+
+add the following metas :
+
+```html
+<meta name="description" content="write stuff here" />
+<title>Omnifood - for the foodie in you</title>
+<link rel="icon" href="./favicon.png" /> // for browser tab
+<link rel="apple-touch-icon" href="./applce180x180.png" /> // for apple devices.
+<link rel="manifest" href="mamanfest.webmanifest" />
+```
+
+favicon, is the icon of webpage!!!
+
+now, we need to setup favicons for android and ios devices when we save the webpage cases.
+
+NOTE:
+we need 3 versions of favicons :
+
+192x192(android), 512x512(android) and 180x180(apple-touch-icon).
+
+it is hard rule to do this :)
+
+so, for apple its easy, by using that thing BUT for android, we need to make a new file :(
+
+**_manifest.webmanifest_**
+
+```webmanifest
+{
+    "icons": [
+        {
+            "src": "./android-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "./android-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
+```
+
+```html
+<link rel="manifest" href="mamanfest.webmanifest" />
+```
+
+So just memorize this :)
+
+#### Image Optimization
+
+NOTE: check what is the max dimension image takes up on page, and then optimize the image to double of it !!!
+
+we can then compress the images using squoosh.com
+
+(when using squoosh, use WebP for instant and affective compression)
+
+now some browsers dont even support image format and hence hehe there is a way. lmao
+
+```html
+<picture>
+    <source srcset="img/hero.webp" type="image/webp" />
+    <source srcset="img/hero-min.png" type="image/png" />
+    <img src="img/hero.webp" class="hero-img" alt="Woman enjoying food" />
+</picture>
+```
+
+NOTE : from the above code, the browser will select the best format that can be supported and hence there will be no issues even if the browser does not support .webp format. in the img tag the src will be replace with the one of the ones supported from above. also in img, we write the format that all browsers will support like png or jpg.
+
+### Hosting on Netlify
+
+:) drag and drop
+
+#### Netlify Forms :
+
+Netlify can work on forms, we just have to mention netlify in the form tag !!!
+
+```html
+<form name="contact" netlify></form>
+```
+
+now every form input must be given data attribute and a value attribute in some cases.
+
+NOTE: dont use netlify for password signups and stuff, that is a feature in netlify, but its paid so.
+
+after mentioning netlify, netlify will make a few personal changes on the website code like add a few tags. When form submits there will even be a thank you for submitting form message that can be changed in netlify.
+
+(only 100 submissions per month)

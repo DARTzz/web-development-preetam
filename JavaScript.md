@@ -1602,7 +1602,7 @@ NOTE : So how to know what value will be returned all in all?
 
 the value at which the net result is evaluated, i.e. the value at which the outcome is fixed and determined and we dont need to go further :)
 
-### Nullish Coalescing Operator(??) (ES 2020)
+### Coalescing Operator(??) (ES 2020)
 
 in the code :
 
@@ -2471,6 +2471,8 @@ both will have same value. this was done to keep the same signature of 3 paramet
 , 'afterbegin' : after begining the selected query
 , 'beforeending' : before the neding of the selected query
 , 'afterending' : after begining the selected query
+
+=) html_tag.insertAdjecentText(position_wrt_tag, string); : used for inserting normal text
 
 =) html_tag.innerHTML : we can set the whole code inside of the tag using this, we can even override the current code :) IN THE TAG !!! it is kinda similar to textContent but, textContent gives the text only whereas innerHTML gives out tags and everything else too.
 
@@ -4207,4 +4209,1174 @@ Hence code must be organised in a very nice way for it working properly.
 QUESTION : what is Synchronous code ?
 ANSWER : Code that is excuded line by line. Hence each line will wait for previous line to execute. But what if a piece of line of code takes too long to execute?
 
+```js
+alert("alert");
+console.log("This is blocked by alert");
+```
+
 EG. Alert window stops the execution of rest of the code below !!
+
+LOOK : setTimeout() function is asynchronous , it will take a callback function and the function wont block execution of next code. HENCE some callback functions are non blocking.
+
+NOTE : another example is, the img.src attribute was made to load in asynchronous way and hence its non blocking. WE can later put an event listener for load event on the image to find when its loaded.(hence remember, we can change src in images.)
+
+QUESTION : is event listener asynchronous when it waits for events?
+ANSWER : NO, asynchronous means that two peaces of code executing at the same time, however, in case of event listener, it is not executing and just waiting. what made img.src asynchronous was the fact that the image loads while code runs and not the event listener for load.
+
+SOME MORE EXAMPLES : geolocation api, Ajax calls.
+
+#### AJAX (Asynchronous JavaSCript And XML) :
+
+allows us to communicate with remote web servers in an asynchronous way. IE> Helps us request data from web servers dynamically.
+
+QUESTION : what is working of AJAX ?
+ANSWER : CLIENT <-----> SERVER the request(get/ post/ etc) and response from server happen asynchronously between the running javascript and the web server.Hence its non blocking.
+
+QUESTION : what is an API ?
+ANSWER : Application Programming INterface : Piece of software that can be used by another piece of software in order to allow applications to talk to each other. eg. Geolocation, Dom, etc. NOTE how thees were made by different people and used in our code.
+
+so what does ajax work on ?
+**Online API**
+
+QUESTION : what is an online API ?
+ANSWER : online api are applications running on web server for acepting requests for data and sends data back as response.
+
+IMPORTANT NOTE : WE WILL study how to build our own online api in next course.
+
+But for now we can use other api that are hosted online by other companies and stuff.
+
+EG of some api>
+1.) weather data
+2.) data about countries
+3.) flights data
+4.) currency conversion data
+5.) api for sending email or SMS
+6.) Google Maps
+etc.
+
+QUESTION : what is xml?
+ANSWER : XML is a data format used in old days.
+
+IMPORTANT NOTE : earlier, xml used to be the way data was sent and fetched BUT not anymore. AJAX is called AJAX for legacy purposes.
+
+RIP XML.
+
+QUESTION : JSON ?
+ANSWER : xml was replaced by json. that is just javascript object format.
+
+WE can find all the apis here :
+
+https://github.com/public-apis/public-apis
+
+### our first AJAX call using restcountries.eu
+
+the resource page of restcountires provides instructions on how to fetch information about countries.
+
+Note, there are various ways of making an ajax call :
+
+**1.) =)XMLHttpRequest() : old school**
+
+request to get data is called 'GET'
+
+=) new XMLHttpRequest(); : for creating request
+
+=) request.open(requestType, URL); : for opening request
+
+=) request.send(); : for sending request
+
+=) request.responseText : afer load event, the responseText will contain the json text for the data fetched from server.
+
+after sending the request, we wait for the load event !!!
+
+```js
+const request = new XMLHttpRequest();
+request.open("GET", "https://restcountries.com/v3.1/name/India");
+request.send();
+request.addEventListener("load", function () {
+    const data = JSON.parse(this.responseText);
+    console.log(data);
+});
+```
+
+QUESTION : what is the use of 'load' event?
+ANSWER : after request has been sent to the server, we wont get the request immidiately and will have to wait. Its non blocking and the load event will trigger once we have fetched the request from the server.
+
+IMPORTANT NOTE : we should only use resopnseText once it has been fetched hence after the load event.
+
+we can convet the respons using =)JSON.parse()
+
+NOTE : make sure to check types and stuff when workign on json data.
+
+when we call two ajax calls at the same time, to fetch data of countries, they run asynchronously.
+
+<br>
+
+## How the web works ? REQUESTS AND RESPONSES
+
+the client - server architecture :)
+
+we can break down a url into following :
+https://restcountries.eu/rest/v2/alpha/PT
+
+here https is the protocol, restcountries.eu is the domainname and the remaining is the resource.
+
+the real IP address before DNS lookup looks like :
+https://140.27.142.889:443 : where 443 is the port number. and the number is ip address.
+
+NOTE: 443 is for HTTPS and 80 for HTTP.
+
+1.) so a TCP/IP socket connect is made between client and server.
+
+2.) after that http request is made by client to the server, that is request to fetch a webpage. below is how a http request looks like :
+
+```
+    GET /rest/v2/alpha/PT HTTP/1.1 // start line :HTTP method +request target + HTTP version
+
+    Host : www.google.com
+    User-agent: Mozilla/5.0  // request headers(many different possibilities)
+    Accept-Language: en-US
+
+    <BODY>                   // request body (only when sending data using POST)
+```
+
+NOTE : some HTTP methods are : GET, PUSH, PUT and PATCH
+
+QUESTION : what is major difference between HTTP and HTTPS ?
+ANSWER : HTTPS is encrypted using TLS and SSL protocols.(end to end encryption)
+
+3.) after the server recieves the requets, it will prepare, process the request and then once ready it will send an HTTP RESPONSE.
+
+```
+    HTTP/1.1 200 OK         // start line : HTTP version + status code + status message.
+
+    Date: Fri, 18 Jan 2021
+    Content-Type: text/html      // response header (many different possibilities)
+    Transfer-Encoding: chunked
+
+    <BODY>                      // response body : contains JSON file or html page
+```
+
+every status has its own code eg. NOTE : 404 page not found !
+
+IMPORTANT NOTE : now this is simpl but there is a catch when it comes to requesting webpages. When we request a page first comes the HTML file upon first request. then the HTML file is loaded(parsed) and scanning for assets like JS, CSS and images etc happens.
+EACH OF WHICH ARE FETCHED USING SEPERATE HTTPS REQUEST AGAIN.
+
+This is logical and justifiable.
+
+QUESTION : TCP/ IP ?
+ANSWER : TCP and IP are the communication protocols that define how data travels across the web. TCP breaks the requests and responses into smaller chunks and reassembles them at the destination device.(Networking :). IP protocol is responsible ensures that small data packets the destination with help of IP addresses.
+
+<br>
+
+### Welcome to Callback Hell :
+
+what if one AJAX call depends on another(eg. we need to display info of border of a county, hence we have to ajax call for the country and then using the data that comes, we do the ajax call for the neigbour).
+
+This means that when we listen for event load on one request and then trigger the next one right. Hence in callback function of first, we do the callback for the second.
+
+QUESTION : what is callback hell ?
+ANSWER : callback hell is when there is nested dependancy betwen various AJAX calls and hence the load callbacks have to be nested. This is done for giving order to callback functions.
+
+```js
+setTimeout(() => {
+    console.log("1 second passed");
+    setTimeout(() => {
+        console.log("2 second passed");
+        setTimeout(() => {
+            console.log("3 second passed");
+            setTimeout(() => {
+                console.log("4 second passed");
+                setTimeout(() => {
+                    console.log("5 second passed");
+                    setTimeout(() => {
+                        console.log("6 second passed");
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    }, 1000);
+}, 1000);
+```
+
+NOTE : above is code for counding down 6 seconds using setTimeout(). NOTICE THE CALLBACK HELL !!!!!!!!!!!
+Makes code hard to maintain and difficult to read.
+
+### Promises and Fetch API :
+
+MODERN way of making Ajax Call :
+
+=) fetch(URL) : to make a simple GET request and returns a Promise !
+
+QUESTION : what are promises ?
+ANSWER : Promise in a object that is used as a placeholder for the future resulte of an asynchronous operation. Its advantages are :
+
+1.) we dont need to rely on Events and callback functions to log async results.
+2.) we can chain promises to make a sequence of async operations instead of callback hell.
+Promises are ES6 feature.
+
+**The promise lifecycle :**
+
+1.) PENDING : before the future value is available and is still happening in async way.
+2.) SETTLED : When the asynchronous task has finished happening in the background. it can further be of the following types :
+a) Fulfilled : when async AJAX call is fulfilled(eg. making ajax to fetch data of country, if it is fetched successfully)
+b) Rejected : when async AJAX call is not fulfilled(eg. when the data does not get fetched successfull )
+
+IMPORTANT QUESTION : what is role of fetch ?
+ANSWER : fetch() function returns a promise and we CONSUME the promise.
+
+Most of the time we consume the promise, and sometimes we need to build a promise that we will do later.
+
+#### Consuming promise :
+
+we assume that the promise will be fullfilled !!
+
+**for resolved values :**
+
+=)promise.then(callbackFunction(result_of_promise){}) : this is how fulfilled promsie is handled and the callback function will revieve the response that will be there after the promise. they type of the result_of_promise in case of ajax call will be Response.
+
+NOTE : the Response revieved from promise, will comprise of values like headers body etc also that we studied in the section above about HTTP requests.
+
+=)response.json(); this method is for all the resolved values and is used so we can read data from response. the json() function itself is an async method(lmao confusing) hence response.json() itself IS A FRIKIN PROMISE !!!! hence we need to handle it like a promise by using another then.
+
+to summarise :
+
+1.) fetch() function will give a promise
+2.) then() will resolve promise and the callback it has will recieve the response that will be generated by the promise.
+3.) response.json() will return the response in a readable format but it must be used with .then since, the .json() function itself is async and returns a promise.
+
+```js
+const getCountryData = function (country) {
+    fetch(`https://restcountries.com/v2/name/${country}`)
+        .then(function (response) {
+            console.log(response); // this whole section itself is a promise since it returns a promise
+            return response.json();
+        })
+        .then(function (data) {
+            //
+            console.log(data);
+        });
+};
+getCountryData("portugal");
+```
+
+QUESTION : how to chain promises ?
+ANSWER : when result of one ajax call is needed for the second one, in that case se can return the response like we did in the above one and chain very conviniently.
+
+IMPORTANT NOTE : in the callback function of the promise, whatever we return will become the fullfilled vlaues of the promise i.e :
+
+```js
+fetch(`URL`)
+    .then(function (result) {
+        // first then
+        return 10;
+    })
+    .then(function (result) {
+        // second then
+        console.log(result);
+    });
+```
+
+in the above code, since the callback function of first then returns 10, now the then itself will return a promsie that is futher handled using a second then and the return value of the first then will bet he result value for the second then.
+
+QUESTION : what is resolved value ?
+ANSWER : resolved value is the value that is returned by the promise and the value that is then passed on into the callback function of the then() method.
+
+IMPORTANT NOTE : then() function returns a promise itself that can be resolved.
+
+this enables us to chain the methods and hence we can keep chaining then() functions.
+
+also NOTE : dont put then inside another then hahahah, or we are back to callback hell.
+
+**Handling rejected promises**
+
+NOTE: The only way user can get handling rejected in fetch() function is, if user loses internet connection.
+
+QUESTION : what happens if we fail to handle rejected promiese ?
+ANSWER: the error we get is Uncaught(in promise) !!
+
+=) fetch(url).then(acceptedPromiseCallback(response){}, rejectedPromisecallback(error){}) :
+
+so we can pass a rejected case function too.
+the second callback is called wit the error argument.
+
+BUT then we have to handle the error for each then() used in the promise chain. there is a solution.
+
+=) .then.catch(errorCallback(err)) : we can attatch catch at the last of the promise chain so as to handle error in all at once.
+
+NOTE : this err is an object, and we can make our own errors using Error object class.
+
+=).finally(callback()) : finally is called in both of the rejected and accepted case :)
+
+IMPORTANT NOTE: the reason finally works after catch is since, catch() also returns a promise. Hence then(), catch( ) and finally can only work on promises and they themselves return a promise.
+
+QUESTION: suppose a user using getch tries to fetch information about a country that does not exist from rest countries, in that case wii the promise be rejected or accepted ?
+ANSWER : promise is only rejected when there is no response from the server, but when we fetch an unknown country then() will work since the server did respond with code 404.
+
+SO there exists this issue where even invalid response from server is cunted as rejected.
+These types of errors need to be handled manually by checking =) response.ok(true/flase) when the promise gets resolved we can check the ok attribute to see if the response is correct or not.
+(in some cases we can even check status : 404)
+
+=) throw new Error(`error message`); we can use this to throw a custom error on console. and whenever, the error is hit(ie.whenever throw nwe Error() is encounterd) it goes to the catch block directly!!!!
+
+HENCE NOTE : catch block is there to catch errors :) and its logical that when we hit our own error it goes to catch.
+
+=) err.message : in the catch() err.message will point to the message that we defined custom in our own error.
+
+the issue ehre is that we need to define error in every then() function.
+
+NOTE: one good practice is to make a helper function that does :
+a) checking if response throws error(response.ok == true)
+b) converts the response to json and return it.
+
+it is becaues this logic is repeated often in the promise chain in case of AJAX calls.
+
+```js
+const getJSON = function (url, errorMsg = "Someting went wrong") {
+    return fetch(url).then((response) => {
+        if (!response.ok) throw new Error(`${errorMsg}(${response.status})`);
+        return response.json();
+    });
+};
+```
+
+Hence we can make a function that returns a promise :).
+
+### Asynchronous JavaScript Behind the scenes :
+
+**Javascript Runtime :** Container that inclues all the pieces are executed in js code(comprises of Enging, webapi and callback queue)
+
+We know that JS is single threaded and there can be no multithreading.
+The callstack can only execute one thread at a time.
+
+QUESTION : Then, how is asysnchronous JS happening ?
+ANSWER : using the EVENT Loop- Callback Queue. NOTE that , event loop maintains a callback queue and is capable of sending any callback from the queue to callstack top when event is trigered. This behaviour makes JS non blocking and concurrent.
+
+#### IMPORTANT Why is event loop so important = Its working.
+
+IMPORTANT QUESTION : how can async code be executed in non blocking way if there is only one thread ?
+ANSWER : Lets look at behind the scenes of Event Loop :
+Now all the tasks that look Asynchronous, eg. changing img.src(for loading images), fetch etc. Happen using the Web API's. img.src() is part of DOM() api.
+HENCE NOTE: the tasks that run asynch run in the environment of WEB APIs and not in CallStack hence not blocking the Callstack. same is true for allll apis like timers etc.
+
+In case of Event listeners, when we attatch an event listener like 'load', Note how event listeners are attatched to the DOM elements or Fetch() api etc. hence being attatched to WEB API's, the event listeners are actually executed in the environment of API hence preventing the blocking in callstack.
+
+NOTE: hence loading event, listening event, fetching event etc, all run concurrent to callstack since they run in different environment.
+
+QUESTION : how are then the asynch event put on the callstack upon resolving ?
+ANSWER : When event like say loading of image finishes in the environment of Web API DOM, the event is put in the callback queue. The queue hence will get filled with events from the API's that have resolved and will wait to be called up by the callstack.
+
+QUESTION : is queue always followed and maintained what about in case of timers?
+ANSWER : NOTE: times gets resolved after the time period is elapsed in the environment of WEB API after that once resolved, it goes in the back of callback queue AND WAITS!!! HENCE IMPORTANT : ITS NOT fixed that timer will be resolved in the given time !!!! its just that it wont be resolved before the time mentioned !!!
+
+QUESTION: what is the role of event loop in the bigger picture ?
+ANSWER : Event loop checks the Callstack and if the callstack is empty(except of global context), the callbacks are put there else not!!!!
+
+NOTE: every time Event Loop takes a callback from Callback queue, its called event loop tick.
+
+Event loop decides when callbacks are executed.
+
+IMPORTANT : Javascript itself does not have a sense of time since its Event Loop and Runtime that manage the asynch behavior and not the engine.
+
+IMPORTANT NOTE: Promises work a bit different incase of concurrency :
+
+#### Callback of Promises and asynch behavior :
+
+callbacks used with Promises dont resolve in Callback Queue But in MICROTASKS QUEUE !!!!
+
+QUESTION : what is featuer of microtask queue?
+ANSWER: microtask queue has more priority than callback queue, and hence, when we Evet Loop checks if callstack is empty, it will perform all microrasks queue operations before moving onn to the callback queue.
+
+#### MISC :
+
+```js
+var isMobile = {
+    Android: function () {
+        return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function () {
+        return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function () {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    Opera: function () {
+        return navigator.userAgent.match(/Opera Mini/i);
+    },
+    Windows: function () {
+        return (
+            navigator.userAgent.match(/IEMobile/i) ||
+            navigator.userAgent.match(/WPDesktop/i)
+        );
+    },
+    any: function () {
+        return (
+            isMobile.Android() ||
+            isMobile.BlackBerry() ||
+            isMobile.iOS() ||
+            isMobile.Opera() ||
+            isMobile.Windows()
+        );
+    },
+};
+```
+
+above is JS code to detect mobile devices which can come in handy.
+
+<br>
+
+### Building our own Promise :
+
+=) new Promise(executorFunction(resolveFunction, rejectFunction){}) : this created a new promise and the executor function will produce a result value.
+
+IMPORTANT NOTE: HERE ARE SOME STUFF :
+a) the executorFunction() contains logic based on which either resolveFunction or rejectFunction will be called, just like incase of fetch API.
+b) resolveFunction(fullfilledValue) : fullfilledValue will be the value that is resolved and sent to the then handler.
+c) rejectFunction(rejectedValue) : we pass the effor message we want for the catch handler.
+
+NOTE that : This means that the fetch() function is a Promise where executorFunction() contains logic to determine if fetching URL GET request was successful or not and based on that called resolveFunction or rejectFunction. and will pass the JSON returned by the webpage in response to resolve function and will pass error code incase of rejectFunction to then() callback or catch() callback respectiverly.
+
+HENCE, resolve/ reject functions determine if then() or catch() will be called in a Promise.
+
+below is a promise for 50% chance lottery win
+
+```js
+const lotteryPromise = new Promise(function (resolve, reject) {
+    if (Math.random() >= 0.5) {
+        resolve("you Win");
+    } else {
+        reject("you lost");
+    }
+});
+
+lotteryPromise
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
+```
+
+so just call the resolve function when wanting to resolve the case and reject when want to reject.
+
+We generally dont create promises too much
+
+**Promicifying :** promicifying i convertion of old style callback functions into promises. This is generally why we create new promises.
+below is promicifying setTimeout() function.
+
+```js
+const wait = function (seconds) {
+    // promisifying setTimeout
+    return new Promise(function (resolve) {
+        setTimeout(resolve, seconds * 1000);
+    });
+};
+```
+
+in the above code, just like fetch() function, we build a wait function that returns a promise with timer functionality.
+
+=) Promise.resolve('resolve value') : will resolve immidiately and detected by then().
+=) Promise.reject('error') : will reject immidiately and detected by catch().
+
+#### Promisifying the Geolocation API :
+
+```js
+const getPosition = function () {
+    return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => resolve(position),
+            (err) => reject(err)
+        );
+    });
+};
+
+//OR
+
+const getPosition2 = function () {
+    return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject); // since the getCurrentPosition automatically passes position in its first callback function.
+    });
+};
+
+getPosition()
+    .then((pos) => console.log(pos))
+    .catch((err) => console.log(err));
+```
+
+### Async/Await Consuming promises
+
+we simply add =) async in front of a function to make it async this simply means that the function will run in background now and is async, the function when done automaically return a promise.
+
+The async function can have 1 or more =)await that take promises. In an async function, await will wait for the promises to deliver.
+
+The await after promise been has the promise resolved will return the resolved value.
+
+```js
+const whereAmI = async function (country) {
+    const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
+    const data = await res.json();
+    console.log(data);
+};
+whereAmI("portugal");
+```
+
+this looks so fancy, and without any complications of then() and catch()
+however, this is just syntactical sugar over then and catch
+
+BUT ITS SO NICE, NO MORE CALLBACK FUNCTIONS!!!!!!!!!!!!!!!
+
+NOTE REMEMBER : await, will take a promise and upon its complition will return its resolved value.
+
+QUESTION : what is ur takeaway from all this ?
+ANSWER : we can make asynchronous code my making promises to wrap callbacks and then resolve them using async & await.
+
+QUESTION : How to handle unfulfilled promises or errors ?
+ANSWER : using error handling below :)
+
+#### Error Handling using : try catch
+
+=) try{code} : will check the following code
+=) catch(err){} : will catch any error in try and will recieve object of the error type.
+
+IMPORTANT NOTE : in case of Async await, we bind our code(entire of it ) in a try block and catch it in catch block :)
+
+if we want our custom errors to be thrown at catch, we can simply throw our own errors :)
+
+#### Building a realistic and good async function
+
+QUESTION : what does an async function return ?
+ANSWER: : IT RETURNS A PROMISE !
+
+```js
+const whereAmI = async function (country) {
+    const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
+    const data = await res.json();
+    return `Your country is ${data.countryName}`;
+};
+const city = whereAmI("portugal");
+console.log(city);
+```
+
+NOTE: in the above example, the console will log Promise{< pending>} and not what we return, THAT IS BECAUSE ASYNC FUNCTIONS RETURN PROMISE.
+
+Hence what will happen to the value returned? That will be the resolved value of the promise returned by function.
+
+hence we have to do this :
+
+```js
+const whereAmI = async function (country) {
+    const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
+    const data = await res.json();
+    return `Your country is ${data.countryName}`;
+};
+const city = whereAmI("portugal");
+city.then((city) => console.log(city));
+```
+
+NOTE: now, make sure to account for the fact that incase if the async function has error and goes to catch() the return value in try will not be encountered so. undefiend will become the resolved value for the whole function. Hence make sure to look into that.
+
+QUESTION : incase of going into catch() block in async function because of error, is the promise returned by async function rejected?
+ANSWER : NO, it wont be rejected and will fully function like a fulfilled promise even if some await promise had issues.
+
+QUESTION : how to resolve that issue?
+ANSWER: at the end of the catch block, RETHROW THE ERROR and that way it will go in the catch() block.
+
+```js
+const whereAmI = async function (country) {
+    try {
+        const res = await fetch(
+            `https://restcountries.eu/rest/v2/name/${country}`
+        );
+        if (!res.ok) throw new Error("problem getting country"); // throwing error
+        const data = await res.json();
+        return `Your country is ${data.countryName}`;
+    } catch (err) {
+        console.log(err);
+        throw err; // rethrowing error
+    }
+};
+const city = whereAmI("portugal");
+city.then((city) => console.log(city))
+    .catch((err) => console.err(err)) // catching the error.
+    .finally(() => console.log("finished getting location"));
+```
+
+IMPORTANT : its not a good idea to mix then() and catch() with async await and hence its prefered to handle even the callback returned by async function with another async function. Best is to use iffy's(IMMEDIATELY EVEOKED FUNCTION EXPRESSION). and this is one of the only usecase for iffy left :(
+
+here goes :
+
+```js
+const whereAmI = async function (country) {
+    try {
+        const res = await fetch(
+            `https://restcountries.eu/rest/v2/name/${country}`
+        );
+        if (!res.ok) throw new Error("problem getting country"); // throwing error
+        const data = await res.json();
+        return `Your country is ${data.countryName}`;
+    } catch (err) {
+        throw err; // rethrowing error
+    }
+};
+(async function () {
+    try {
+        const cos = await whereAmI("portugal"); // note that if error is returned here, then catch will be trigerred.
+        console.log(cos);
+    } catch (err) {
+        console.log(err);
+    } finally {
+        console.log("finished getting location");
+    }
+})();
+```
+
+#### Running promices in parallell :
+
+in a single async function, we can run promices being processed in parallell.
+
+QUESTION : are various await promises in an async function resolved parallell?
+ANSWER: no they are resolved one after another, this was incase if one depended on result of other.
+
+=) Promise.all(array of promises) => takes array of promises and returns a new promise that executes all the mentioned promises in array.
+
+```js
+const get3Countires = async function () {
+    const data = await Promise.all([
+        fetch(`https://restcountries.eu/rest/v2/name/preetamasia`),
+        fetch(`https://restcountries.eu/rest/v2/name/waganda`),
+        fetch(`https://restcountries.eu/rest/v2/name/india`),
+    ]);
+};
+```
+
+IMPORTANT NOTE : here we will get an array containing the data we try to fetch.
+
+QUESTION : what happens incase of rejection?
+ANSWER : its like shortcircuiting, if one promise rejects in the Promise.all() the whole is rejected and goes to catch block.
+
+#### Other Promise conbinators :
+
+=) Promise.race(array of promise) : the fastest promise to get settled will be the fulfilled result of the Promise.race(). IE if it first fails, then too it will be the winner.
+QUESTION : can this be useful?
+ANSWER: imagine there is a fetch that is taking too much time to load for a user, in that case, we can use race and setup a sencond promicifyed timeout function, and if the loading of a fetch takes too long, the timeout will be called. HENCE CAN BE USEFULL !!.
+ITS KINDA RACE AGAINST TIMER.
+
+=) Promise.allSettled(array of promises) : returns array of all setteled promises.
+QUESTION : difference from Promise.all() ??
+ANSWER : promise.all() shortcircuits upon a rejected promise whereas Promise.allSettled will go onn and check all the promises.
+
+=) Promise.any(array of promises) : returns the first fullfilled promise.
+QUESTION : difference from Promise.race ??
+ANSWER: promise.race() will shortcircuit at a rejected first promice too but this one wont.
+
+<hr>
+
+## Build Tools and HOW TO JAVASCTIPT
+
+#### an overview of Modern JS
+
+In old days only one script was used, but now, we break our code into varios modules along with 3rd party modules.
+Modules are also called Packages.
+
+Some examples of 3rd party packages that are used throughout are :
+1.) React
+2.) JQuery
+3.) Leaflet
+etc
+
+we can import these packages using NPM.
+
+**NPM :** NPM is a program that with help of command line helps us manage libraries.
+
+JS modules go throught the followingng Build process steps :
+
+1.) IN the end though, the small js modules will be built inot a JS Bundle that has all.
+This step of bundling is imp because :
+a.) this compreees the code
+b.) old browsers dont support module format and need single file and hence.
+c.) better to send single file than multiple.
+
+2.) The next step is **Transpiling/Polyfilliing**, this is used to convert the modern JS back to ES5 for backward compatibility.
+
+This is done using **webpack or parcel**. these are called Bundler.(we will use parcel since it has no setup requirements.) These we will find in NPM.
+
+#### Modules in JS
+
+A module is a reusable piece of code that encapsulates implementation details. It s a standalone file.
+
+we can Import or Export values from a module
+
+NOTE: a module that exports its called Public API.
+
+we create dependancy on other module by importing those modules.
+
+QUESTION : USE OF MODULES ? :
+ANSWER:
+a.) COMPOSE SOFTWARE : modulea re small building blocks we put together to make complex apps.
+b.) ISOLATE COMPONENTS : modules can be developed in isolation without thinking about the entire codebase.
+c.) ABSTRACT CODE : Implement low-level code in modules and import these abstractions into other modules.
+d.) ORGANIZE CODE : modules naturally lead to a more organized codebase.
+e.) REUSE CODE : Modules allow us to easily reuse the same code, even across multiple projects.
+
+ES6 modules are modulta that are sotred in files and one module per file.
+
+QUESTION : ES6 modules vs Scripts.
+ANSWER: a.) variables are private to the module and only visible outside when exported VS in script the global variables are global :)
+b.) By default ES6 modules are in strict mode VS Scripts are in "Sloppy" mode by default.
+c.) Top level this value is undefined in modules VS this points to window in top level in script
+d.) We can import and export VS we dont do that here( :) )
+e.) < script type="module"> VS < script>
+f.) File downloading happend in ASYNCHRONOUES WAY when we import or when we use < script> in html file VS Synchronous in case of normal script sunless we use async or defer.
+
+IMPORTANT NOTE : here, importing and Downloading scripts that are imported, are two different operations.
+
+NOTE: import are hoisted meaning whereever we write them, they will be on top :) AND imports must always be made in the top level
+
+QUESTION : if imports are hoisted and are downloaded in async, how do they work?
+ANSWER : NOTE that they are hoisted and downloaded while parsing and not while execution hence it does not affect execution. Remember that a module only executes afeter the imports have been downloaded.
+
+NOTE : this explains why imports must be top level, since if they are suppose inside a function, the module will be downloaded only when the function is executed and not while parsing.
+
+#### Importing Modules :
+
+NOTE that, when we use a function that is from another module like rand from math.js, the following happens :
+
+a.) while parsing the code JS find that we used rand() function that is in math.js library
+b.) after finding all the imports they are hoisted and then
+c.) the importing of modules is done synchronously with respect to execution of the module
+
+QUESTION : what does that mean?
+ANSWER : suppose file A.js is importing rand() from math.js, in that case execution of A.js will only happen after the imported files have been downloaded and executed(synchronous behavior) so that before A.js is executed we know all the libraries and stuff needed.
+
+QUESTION : how is this synchronous behavior good?
+ANSWER: its very important to know the dependancies before execution of a module, this also comes in very handy for Babel, parcel etc file bundlers later.
+
+QUESTION : wait wait wait !!! can you again explain what is happening ? in steps ?
+ANSWER: Let us assume a file.js that has 3 imports. In this case :
+a.) Before file.js is executed, all 3 imports must execute making a synchronous behavior.(hence imports are executed before the module itself)
+b.) all 3 imports are downloaded in an ASYNCHRONOUS BEHAVIOR.(the imports with respect to each other are downloaded and executed in asynch)
+c.) the imports are hoisted on top of the code and must only be written in top level code.
+
+#### JS importing is live and different !!!
+
+unlike importing in other languages, in JS the imported values dont get a copy from the exporting modules instead modules that use import actually get a reference to the library like a live connection.
+
+NOTE : EXAMPLE OF ABOVE : Suppose file.js imports rand() from math.js. in that case :
+a.) math.js will export
+b.) file.js will import
+c.) import in math.js is just a reference to the value of export in math.js.
+
+THIS IS FRIKIN AWESOME.
+
+in comparison to java or C, the code from the other imported library is copied in the final product :)
+
+=) import './module1.js'; : for importing an entire script :)
+
+=) import {importedStuff} from './moduleName.js'; for importin particular stuff
+
+=) import {importedStuff as stuff} from './moduleName.js'; for renaming the imported stuff.
+
+=) import \* as NameOfEverything from './moduleName.js'; : this will create NameOfEveryting object that will contain everything from moduleName.js
+
+=) import name from './moduleName.js' : for importing the default into name
+
+#### Exports and types :
+
+a) Names exports : we have to intentionally add export in front of stuff that can be exported.
+
+```js
+export const fun = function () {
+    return "hello";
+}; // named export
+```
+
+```js
+import { fun } from "./hello.js"; // importing in another file
+```
+
+we can even export multiple stuff using named exports and that too with a new name.
+
+```js
+const totalPrice = 237;
+const totalQuantity = 23;
+
+export { totalPrice as price, totalQuantity as quan }; // exporting and renaming too
+```
+
+b) Default exports :
+when we want to export only one thiing from a module
+
+```js
+export default function (product, quantity) {
+    console.log(`${quantity} ${product} added to cart`);
+}
+```
+
+```js
+import add from "./shoppingCart.js";
+```
+
+in the above, we have set what will be added by default value when we simply import from a module.
+
+NOTE : we can call default imports and named imports in the same line eg :
+
+```js
+import add, { addToCar, totalPrice as price } from "./shoppingCart.js";
+```
+
+but its not recomended
+
+IMPORTANT NOTE : remember that when we actually import stuff, we are in reality creating a live connection to the module we are importing and not just creating a copy of the code.
+
+#### TOP level await(ES2022)
+
+WE can now use await outside of async function called top level await, and it only works in modules.
+hence we need to set type="module" for this .
+
+THIS IS SO EPIC !!!!!!
+
+BUT :
+NOTE : the await is now blocking the execution of code since now its no longer a part of MICROTASK queue and directly in the callstack.
+
+QUESTION : can you tell one case this is useful ?
+ANSWER : when we fetch data from an async function, it is a promise and to handle that we use then() BUT, now instead we can use top level await!!!
+
+```js
+const getCoords = async function () {
+    const res = await fetch("getLocation.com");
+    const data = await res.json();
+
+    return data;
+};
+const finalData = await getCoords();
+console.log(finalData);
+```
+
+And hence we can simply await, instead of other stuff :)
+
+QUESTION : is there other implication of top level await in case of Modules ?
+ANSWER : if the exporting module, has some top level await, the importing module will not execute before the top levle await in importing module has been resolved(since top level await has blocking behavior).
+
+NOTE : make sure to keep this in mind :)
+
+#### The Module Pattern(DEPRICATED) :
+
+its important to understand how old modules worked, since they are still present in old code.
+
+```js
+// below is code for old modules pattern
+
+const ShoppingCart2 = (function(){
+    const cart - [];
+    const shippingCost = 10;
+    const totalPrice = 237;
+    const totalQuantity = 23;
+
+    const addToCart = function(product, quantity){
+        cart.push({porduct, quantity});
+        console.log(`${quantity} ${product} added to cart`);
+    };
+    const orderStock =function(prduct,quantityy){
+        console.log(`${quanityt} ${product} ordered from supplier`);
+    };
+
+    return{  // returnign all functionality.
+        addToCart,
+        cart,
+        totalPrice,
+        totalQuantity,
+    };
+})();
+
+```
+
+QUESTION : How and Why does this work ?
+ANSWER : we make an IFFY and store its value in an object and then we can use the objects returned by the funtion.
+
+QUESTION : BUT HOW DOES THIS WORK AFTER THE IFFY HAS ALREADY EXECUTED ?!!!
+ANSWER : Closures, even if the scope ends, the function that were defined can access the elements that were in the scope when they were defined.
+
+#### CommonJS modules ? another moduling pattern
+
+QUESTION : why are CommonJs modules important ?
+ANSWER: they have been used in Node js like forever and only recently ES6 modules have been implemented in NODE JS.
+
+NOTE : all the modules that we will use from NPM are still in CommonJs modules format !!!
+
+```js
+// How to export ?
+
+export.fun = function(){
+    code;
+};
+
+// How to import ?
+
+const { fun } = require(`./fun.js`);
+
+```
+
+NOTE: we will study this in Node tutorial later but lets stick to this for now.
+
+#### A brief intro to the command line
+
+=) dir : contents of current folder
+=) cd : change directory
+=) cd .. : to go up in directory
+=) cls
+=) mkdir name : creates a new folder
+=) rmdir name : deltes empty directory
+=) edit name.extension : create a file , we can create multiple files seperated by space.
+=) del fileName : delete file
+=) mv fileName location : moving file to relative location
+=) rm -R directoryName : deletes all files and the directory too.
+=) ctrl + c : stop execution
+
+### NPM :
+
+NPM is both a software and a package
+
+QUESTION : why NPM ?
+ANSWER : In earlier times we simply used to use script and import a library and that will give us a global variables that we can use in our own scipt(like in mappy we used leaftet). But this is very messy.
+
+The issuse is that what if a new version comes out? then we have to redownload or relink. NPM just makes our life eazy af man.
+
+=) npm -v : to check if npm is installed.
+=) npm init : to initialise npm for a project(this will create a package.json file) This will give some options and questions taht we can answer.
+
+Now NPM has created a project file for us.
+we can install leaflet using NPM :)
+
+=) npm install leaflet :
+
+NOTE : when we install stuff using NPM, there will be a fiels in package.json called "dependencies" that will take note of our installs.
+also there will be a folder called node_modules taht will have the library that we installed for our program :)
+
+in the above example, THERE WILL BE EVERYTHING WE NEED INTO A FOLDER CALLED leaflet !!!!
+
+IMPORTANT : **Lodash** is a very useful library that inclues a lot of functions and other useful stuff for arrays and stuff etc !!! THERE IS A FUNCTION TO CLONE OBJECTS TOO !!!!!!!! =) Object.assign({}, state) : this does create a new object but does not deal with nested objects
+
+IMPORTANT NOTE : remember, we need CommonJS modules to import the libraries form NPM !!!
+
+QUESTION : but JavaScript cant read CommonJs modules ??? they how and why?
+ANSWER: for working of CommonJs modules importing , we need to use BUNDLESRS !!! we will see how that works later. However some libraries like Loadash has a way to include it using ES6 Modules as well !! check documentation.
+
+=) npm i lodash-es : this installs a lodash that can be imported with ES6 modules.
+
+QUESTION : what is the real use of package.json ?
+ANSWER: when we move our project, WE DONT HAVE TO CARRY THE NPM LIBRARY , JUST THE files and package.json file. and use command :
+
+=) npm install : will install the packags from package.json. dependancies !!!!!!!!!!!!!!!
+
+#### Parcel - Package Bundler
+
+Webpack is alternate and is a very famous bundler in react world, but we will use parcel since its ready to use right out of package.
+
+=) npm install parcel --save-dev : (NOTE: we can install particular version using =) npm install parcel@1.12.4)
+
+QUESTION : what is a dev dependancy (--save-dev)?
+ANSWER : a dependancy that we need to build our project and wont be included in the library. It creates a new attribute in the package.jsonn called "devDependencies".
+
+now the catch is, that generally to use programs on terminal, we have to set environment variable BUT, we installed parcel locally so what do we do?
+
+=) npx parcel index.html : used to run bundler and index.html is the entry point. (alternate : =)sudo parcel index.html)
+
+QUESTION : what is npx ?
+ANSWER : npx enables us to use parcel without setting environment variable. It is just another programm that is installed with Node.
+
+QUESTION : What will parcel do ?
+ANSWER : parcel will combine the dependancies and all the modules taking the script in index.html as entry point.
+
+NOTE: Parcel actually will start another development server on localhost:1234 :) (just like live-server)
+
+=) npm uninstall parcel : for uninstalling
+
+IMPORTANT NOTE: Parcel will combine all modules and libraries to form a script hence make sure to mention the < script defer src=""> without the type attibute!!
+
+Parcel will create a folder dist that will have our project finalised and ready for distibution.
+NOTE: IT WILL GIVE US THE FINAL PRODUCT :)
+
+Parcel will get rid of all the stuff that is not needed and compress code :)
+
+IMPORTANT **HOT MODULE RELOADING**
+
+```js
+// in any module, this code only parcel can understand
+if (module.hot) {
+    module.hot.accept();
+}
+```
+
+One issue we had in the live server was, reloading page :(
+THIS WILL FIX THAT !!!! The server run by parcel will without reloading reflect changes on webpage !!!!
+NOTE: this will be at port 1234
+
+QUESTION: what will be an example of state not changing ?
+ANSWER : if we are adding somethign to object, or loging inn, we wont be logged out upon saving changes since it will persist the state.
+
+**Another use :**
+we no longer need to specify the complete directory or import, eg :
+
+```js
+import cloneDeep from "loadash-es";
+```
+
+THIS EVEN WORKS FOR IMAGES AND ALL THAT STUFF
+
+NOTE: if loadash-es was not installed, Parcel is even smart enough to install it !!!!!
+
+##### npm scripts :
+
+in the package.json, there is a field called scripts, in which we can setup some shortcut terms eg :
+NOTE: we use this instead of =) npx parcel index.html
+
+```js
+// package.json
+"scripts":{
+"start": "parcel index.html",
+"build": "parcel build index.html",
+},
+```
+
+this will allow us to =) npm run start : this is how we run script commands hence from the above code we can run "npm run start" and that is eqivalent to : "npm parcel index.html",
+=) npm run build : from above code will build the project finally and will also display size stats.
+
+=) npx parcel build index.html(depricated) : use the above method :)
+
+IMPORTANT NOTE : we can install on global using : =) npm install parcel -g : this will install parcel globally and we can use parcel command without script or npx and stuff HOWEVER : the devs of these tools advice to install them on seperate projects so that we can stay on latest versions.
+
+#### Babel for Transpiling and core-js for Polyfiling:
+
+Babel works with pluggins and features that we can configure. In case of Babel, pluggins would be the fatures we want to downgrade to es5 like arrow functions only etc.
+BUT we transpile all :)
+
+=) npm install --save-dev @babel/preset-react
+
+QUESTION: Transpiling vs Polyfiling
+ANSWER : Transpiling is the process of converting new syntax code to old syntax whereas, polyfiling is converting new features with the help of old javascript logic.
+
+QUESTION: one more time in english please :)
+ANSWER: in babel we can select the modern features we want to converted to ES5 for old browser support BUT we instead use the PRESETS in Babel that converts all features to ES5(@babel/preset-env). check babel documentation for more. The catch is that some expreimantal features, that have not been approved fully by ECMA are not int he preset of babel, and hence we must go into documentations and then include the presets. so chck incase of exprimental features.
+
+IMPORTANT NOTE: Transpiling just works for converting stuff that is new syntax to old WE CANNOT CONVERT EVERY FEATURE BACK TO ES5!!!!! eg. we cannot convert Promsie or Array.find() to backward features since we cant just changes syntax to obtain their functionality. But we can
+
+earlie Babel used to give features of polyflll to but now they suggest core-js
+
+=) npm install --save-dev core-js;
+
+we then =) import 'core-js/stable'
+
+QUESTION: what will core-js do ?
+ANSWER: it will remake the features not present in es5 !!! hence it will recreates methods like Array.find() etc in the Array.prototype while compilation !!!! It will even do stuff with Promise !!!
+
+we can check int eh script that is created to see the working of core-js.
+
+ONE LAST PACKAGE :
+
+=) npm install regenerator-runtime and =) import 'regenerator-runtime/runtime';
+
+QUESTION: why import this ?
+ANSWER : for polifilling async functions we need to have regenerator-runtime/runtime :)
+
+<hr>
+
+### Writing clean and modern JS :
+
+a.) Readable Code
+write code so that others can understand it.
+write code that you can understand
+avoid too clevel and overcomplicated solutions
+use descriptive variable names : what they contain
+use descriptive functions names : what they do
+
+b.) General
+use DRY principle(refactor your code)
+Don't pollute global namespace, encapsulate instead
+Dont use var
+use strong type checks (=== and !== )
+
+c.) Functions
+Generally functiosn should do only one thing
+dont use more than 3 function parameters
+use default parameters whenever possible
+generally return same data type as received
+use arrow functions when they make code more readable
+
+d.) OOP
+Use ES6 classes
+Encapsulate data and dont mutate it from outside the class
+Implement method chaining
+Do not use arrow functions as methods (in regular objects)
+
+e.) Avoid nested code(code inside block inside block etc)
+Use early return (guard clauses)
+Use ternary(conditional) or logical operators instead of if
+Use multiple if instead of if/else-if
+Avoid for loops, use arry methods instead
+Avoid callback=based asynchronous API's
+
+f.) Asynchronous code
+Consume promises with async/await for best redability
+Whenver possible, run promises in parallel(Promise.all)(when not dependant on one another)
+Handle errors and promise rejections
+
+NOTE: emogis take 2 slots in strings :)
+
+### Deccrative and Functional JavaScript Principles :
+
+IMPORTANT : There are two main paraadigms of writing code, and they are :
+
+**a.) IMPERATIVE :** In this paradigm we need to instruct computer on _how to do_ EVERYTING. and we explain computer every single step it has to follow to achieev a result. EG> if we are baking a cake, WE TELL EVERY SIGLE STEP IN ORDER TO ACHIEVE A RESULT.
+eg. below is a code to double an arry in imperative way :
+
+```js
+// imperative double array values
+const arr = [2, 4, 6, 8];
+const doubled = [];
+for (let i = 0; i < arr.length; i++) {
+    doubled[i] = arr[i] * 2;
+}
+```
+
+here we tell computer every single setp, declare, loop, increment, assign etc.
+
+**b.) DECLARATIVE :** in this padigmn we only tell the computer _what to do_. and we simply describe the way the computer should achieve the result. The HOW step is abstarcted away. EG > if we are baking a cake, WE ONLY TELL HOW THE CAKE SHOULD TASTE AND LOOK
+eg. below is a code to double arrar in declarative way
+
+```js
+// declarative double array values
+const arr = [2, 4, 6, 8];
+const doubled = arr.map((n) => n * 2);
+```
+
+here we are simply telling it what to do :)
+
+one sub of declarative programming paradigm is FUNCTIONAL PROGRAMMING
+
+#### Functional Programming (META in JS):
+
+Its a Declarative programming paradigm
+
+**Based on the idea of writing software by combining many pure functions, avoiding side effects and avoiding mutating data.**
+
+NOTE: a **side effect** is modification(mutation) of any data outside of the function(mutating external variables, logging to console, writing DOM, etc.)
+NOTE: a **pure function** is function without side effects. Does not depend on external variables. Given the same inputs, always returns the same outputs.
+NOTE: **immutability :** State(data ) is never modified! instead, state is copied and the copy is mutated and returned.
+
+VERY DIFFICULT TO IMPLEMENT !!!
+
+QUESTION: so do we go 100% functional ?
+ANSWER : no, we should mix match the imperative and declarative paradigmn. Here are a few we can follow :
+-> Try to avoid data Mutations
+-> use build-in methods that dont produce side effects
+-> do data transformations with methods such as .map(), .filter() and .reduce()
+-> try to avoid side effects in functions: this is ofcourse not always possible.
+
+Declarative additions :
+-> use array an dobject destructuring
+-> use the spread opeartor(...)
+-> uset he ternary contitional operator
+-> use template literals
+
+=) Object.freeze({ object body}) : makes an immutable object :) BUT
+NOTE: object.freeze only freezes the first level and its not deep freeze and this can bse used in a very well way :)
+
+there are 3rd party libraries that do deep freeze :)
+
+IMPORTANT NOTE : JS libraries like React are heavily dependant on functional programming concepts.
