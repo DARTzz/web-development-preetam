@@ -9,7 +9,7 @@ alert function is for getting prompt messages.
 
 ### What is JavaScript ?
 
-> > Javascript is a high level OOP Multiparadigm programming language.
+> Javascript is a high level OOP Multiparadigm programming language.
 
 > High-Level means human redable and high level of abstractions.
 
@@ -1692,6 +1692,18 @@ for (let [rollNumber, name] of students.entries()) {
 
 NOTE: not all iterable features in JS can use accessed using indexing, but they all respond well to for of loop
 
+=) fromEntries() : this is the reverse of entries and wil convert the tuple of array format back to Object format Eg :
+
+```js
+[[1,2],[2,3],[4,5]]
+// will becomes :
+{
+    1:2,
+    2:3,
+    4:5
+}
+```
+
 <br>
 
 ### Enhanced Object Literals
@@ -2481,7 +2493,7 @@ both will have same value. this was done to keep the same signature of 3 paramet
 In JS some array method share very important : Map, Filter and Reduce.
 
 _Map :_ similar to forEach but, it creates a brand new array based on array, so it will apply a callback function to the current array elements one by one. we say _"we map the value of one array into a new array based on a callback funciton"_.
-arr.map(current_element, index, array) and the callback function should return the new value for the new array.
+=) arr.map(callbackFUnction(current_element, index, array)) and the callback function should return the new value for the new array.
 
 _Filter :_ used to filter some elements into a new array based on a condition.
 the callback function in this case should return true or false based on if the element is to be included in the new array.
@@ -4953,7 +4965,7 @@ a.) Before file.js is executed, all 3 imports must execute making a synchronous 
 b.) all 3 imports are downloaded in an ASYNCHRONOUS BEHAVIOR.(the imports with respect to each other are downloaded and executed in asynch)
 c.) the imports are hoisted on top of the code and must only be written in top level code.
 
-#### JS importing is live and different !!!
+#### IMPORTANT :JS importing is live and different !!!
 
 unlike importing in other languages, in JS the imported values dont get a copy from the exporting modules instead modules that use import actually get a reference to the library like a live connection.
 
@@ -4963,6 +4975,7 @@ b.) file.js will import
 c.) import in math.js is just a reference to the value of export in math.js.
 
 THIS IS FRIKIN AWESOME.
+NOTE: so take note that, the changes made in the export state will be reflected in import state and vice versa since both are actually the same stuff.
 
 in comparison to java or C, the code from the other imported library is copied in the final product :)
 
@@ -4975,6 +4988,9 @@ in comparison to java or C, the code from the other imported library is copied i
 =) import \* as NameOfEverything from './moduleName.js'; : this will create NameOfEveryting object that will contain everything from moduleName.js
 
 =) import name from './moduleName.js' : for importing the default into name
+
+QUESTION : why do we use curly braces{} when importing ?
+ANSWER: when we import from a module, every element that is exported by that module COMES IN OBJECT FORMAT !!!! hence we are actually using destructuring kind of for getting stuff, we can hence get multiple files from same module using =)import {a,b} from './moduleA.js';
 
 #### Exports and types :
 
@@ -5164,11 +5180,12 @@ ANSWER: when we move our project, WE DONT HAVE TO CARRY THE NPM LIBRARY , JUST T
 
 =) npm install : will install the packags from package.json. dependancies !!!!!!!!!!!!!!!
 
-#### Parcel - Package Bundler
+#### Parcel - Package Bundler(there have been changes in the latest version see below this section)
 
-Webpack is alternate and is a very famous bundler in react world, but we will use parcel since its ready to use right out of package.
+Webpack is alternate and is a very famous bundler in react world, but we will use parcel since its ready to use right out of package. IT EVEN CONVERTS SASS files BACK TO CSS.
 
-=) npm install parcel --save-dev : (NOTE: we can install particular version using =) npm install parcel@1.12.4)
+=) npm install parcel --save-dev :(we can write -D too) (NOTE: we can install particular version using =) npm install parcel@1.12.4)
+=) npm install parcel@next -D : will download the experimental next vrsion instead of latest stable one.
 
 QUESTION : what is a dev dependancy (--save-dev)?
 ANSWER : a dependancy that we need to build our project and wont be included in the library. It creates a new attribute in the package.jsonn called "devDependencies".
@@ -5240,6 +5257,18 @@ this will allow us to =) npm run start : this is how we run script commands henc
 =) npx parcel build index.html(depricated) : use the above method :)
 
 IMPORTANT NOTE : we can install on global using : =) npm install parcel -g : this will install parcel globally and we can use parcel command without script or npx and stuff HOWEVER : the devs of these tools advice to install them on seperate projects so that we can stay on latest versions.
+
+#### Latest changes in Parcel IMPORTANT
+
+-> if using Parcel version 2, remove the main property completely from Package.json
+
+-> now in the < script type="module" src="">, since now modules are accepted in place of scripts hence replace defer and use type = "module"
+
+-> IMPORTANT NOTE : Suppose we include src to images in local directory of the script file, in that case remember that parcel will make a seperate script file in new folder dist HOWEVER, the directory is no more valid hence we in import images folder also :)
+
+=) import icons from 'url:../img/icons.svg';(yes we need to place the url for images, videos or audios and even the icons files)
+
+NOTE: remember to import all the asset folders in the script that are being used in the script like images etc.
 
 #### Babel for Transpiling and core-js for Polyfiling:
 
@@ -5380,3 +5409,369 @@ NOTE: object.freeze only freezes the first level and its not deep freeze and thi
 there are 3rd party libraries that do deep freeze :)
 
 IMPORTANT NOTE : JS libraries like React are heavily dependant on functional programming concepts.
+
+### MISC
+
+```css
+.spinner svg {
+    height: 6rem;
+    width: 6rem;
+    fill: #f38e82;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+```
+
+code for css for rotating spinner.
+
+#### Hash Change :
+
+when we click on a link in our project, if our < a href="#id" > and we click on the link, in that case the page hash will change in the URL of the page. ANS WE CAN LISTEN FOR THAT EVENT !!!
+
+=) window.addEventListener('hashchange', callbcakFunction(){}) : will listen for the change of hash on the window.
+=) window.location.hash; for fetching the current hash of page(WITH HASH)
+
+QUESTION : how is this useful?
+ANSWER : we can setup links on page such that their href changes the hash and we can get that hash and then based on it make changes to the page !! Suppose fetch some information from another API etc.(like in forkify, we used the button press to change the page hash and based on the hash, we changed the reciepie on display and even change the data being fetched from the api)
+
+```html
+<a href="#5ed6604591c37cdc054bca10">RECIPE 1</a>
+```
+
+```js
+ window.addEventListener('hashchange', callbcakFunction(){})
+ const id = window.location.hash;
+```
+
+NOTE: when we implement page changes using hashchange, we should also listen for load event of page initially, this is because IMPORTANT : hashchange only triggers when hash changes and wont trigger the first time page loads on original hash!! also window.location. wont find any hash !! The reason why we need load event is since it may happen that user can copy the link with hash and paste it with hash so in that scinario we need to listen for load event inplace of hash change. meaning following are the 2 types of page loading :
+-> when user copies the link of website with hash (we need load event)
+-> when user opens page with a link without hash (we need to break out of load callback incase of this or force insert hash if dependant on it)
+
+QUESTION : how to handle this ?
+ANSWER: just use a guard clause and either force insert a hash on page loading OR, if there is no need of initial hash(like in forkify) break out :).
+
+=) window.addEventListener('load', showRecipe);
+
+QUESTION : why do we need good architecture ?
+ANSWER : Structure, Maintainability and Expandibility
+
+##### Project architectures :
+
+We can create our own project architecture for a small scale project, however, the most famous patterns are :
+
+-> MVC : Model View Controller
+
+-> MVP : Model View Presenter
+
+-> Flux
+
+We can use frameworks like :
+
+-> React
+
+-> Angular
+
+-> Vue
+
+-> Svlte, etc.
+
+in these frameworks we dont have to worry too much about architecture since they just work :)
+
+**COMPONENTS OF Project ARCHITECUTURE** :
+
+-> Business Logic : Code that acutally solves the business problem, eg. sending messages in Whatsapp.
+
+-> State : Stores all the data about application that is running(FRONT END DATA), data like api used, page viewer is looking at.If there are changes in state, then UI should reflect that.NOTE: since storking data and sync are essential, There are tools like Redux or Mobx.
+
+-> HTTP library : For making and recieveing AJAX requests.
+
+-> Application Logic(Router) : Only contains the implementation of application itself(UNLIKE BUSINESS LOGIC) eg. how click should animate etc. This is why this state is also called router.
+
+-> Presentation Logic(UI latyer) : All about the visible part of the applcation. NOTE : Essentially displays application state and stays in sync with State.
+
+#### Model- View -Controller(MVC) Architecture :
+
+The MVC consists of :
+
+**WEB | <---> MODEL <--- CONTROLLER ---> VIEW ---> | USER**
+
+-> MODEL : Business Logic, State and HTTP Library(logic code, storing data about front end and the data fetched from server, changes to me made in view start to occur from here)
+
+-> CONTROLLER : Application Logic( controls how the complete application will work and will direct MODEL and VIEW on how to work, also will use the publisher subscriber patter to attatch event handlers from view)
+
+-> VIEW(visible to viewer logic like DOM, adding html, removing html, making changes to html and css) : Presentation Logic , this is generally a class that exports its own objects AND for different sections of page, we can make several Views.
+
+NOTE: in this modal we essentially seperate the LOGIC with PRESENTATION but then we need to connect them somehow, and hence we use Applicaiton Logic.
+
+IMPORTANT : CONTROLLER dispatches tasks to model and view
+
+QUESTION : Can you explain with example of a click ?
+ANSWER : Suppose a click happens on User end :
+
+a.) CONTROLLER will handle the click event
+
+b.) handling may involve updating VIEW and asking MODEL for some data
+
+c.) suppose MODEL makes an Ajax call, in that case
+
+d.) CONTROLLER will take the result of Ajax call from MODEL and will pass it to VIEW for displaying.
+
+e.) VIEW will render data in the UI.
+
+IMPORTANT NOTE: HENCE , only CONTROLLER will import MODEL and VIEW !!!!
+
+QUESTION: but again there is an issue :), why is event handler not in VIEW ? and even if it was in VIEW, it uses code from CONTROLLER as callback .
+ANSWER : The issue are :
+
+-> Event should be handled in the CONTROLLER(otherwise we would have application logic in view)
+
+-> Events should be listened for in the VIEW(otherwise we would need DOM elements in CONTROLLER)
+
+IMPORTANT NOTE : another issue is that, we cant call the function from CONTROLLER module into VIEW module since VIEW cant import from CONTROLLER.
+
+hence making it a deadlock BUT NOTE: we have Publisher-Subscriber Pattern !
+
+#### PUBLISHHER-SUBSCRIBER PATTERN :
+
+PUBLISHER is the code that knows when to react(i.e. Event Handler in VIEW)
+SUBSCRIBER is the code that wants to react(i.e. The callback funciton in CONTROLLER)
+
+QUESTION : so how dooes this work?
+ANSWER : in the controller, we make a function(say init()) and that function will call the event handling function(say addHandlerFun()). When the program runs, init() will also pass down the callback function into the addHandlerFun() and addHandlerFun() will then use the passed in callback into the event listener inside it. HENCE, the event handler will be attatched on the DOM with the callback function
+
+NOTE: this wont disrupt the law of 'VIEW cant import MODULE' !!
+
+IMPORTANT QUESTION: what is the bigger indication here?
+ANSWER: NOTE : the catch is that CONTROLLER is the brain and wont listen to others and hence when event handler is attatched, its not the VIEW that is doing it !!! using init CONTROLLER is demanding VIEW to call an eventHandler on its own code!!!!!
+
+<br>
+
+**npm fractional** can be used to convert decimals to fractions :)
+
+NOTE: when we import from libraries in parcel, we dont need to specify the directory in case of the librariy we install using npm, since parcel will find them auto :)
+
+#### the config.js and helpers. js file :
+
+we make a file called config.js that contains the variables that are important and to use used in a shared and global way.
+HENCE THIS IS OUR GLOBAL SCOPE.
+
+QUESTION : what woule be some good exaple of data that can be kept in config.js?
+ANSWER : one good example would be to keep data that is prone to change and repeated across other files. like URL that may change in future and needs to be updated throughout.
+
+helpers.js has functions used throughout the function
+
+QUESTION : what woule be some good exaple of data that can be kept in helpers.js?
+ANSWER : one good candidate would be to create a function that would get json from a fetch API.
+
+IMPORTANT NOTE: make sure to use .js extension when importing self made modules.
+
+-> NOTE: many times we had to restart parcel server inorder for stuff to work :). SO make sure to restart sometiems. Alternatively keep live server also onn.
+IT can also be caused by HOT module reload. hence turn that off !!!
+
+<hr>
+
+## Structuring an actual project and Forkify Observations
+
+### Project Folder Distribution :
+
+```
+📁project main folder
+    📂dist
+    📂node_modules
+    📂src
+        📷img
+        📂js
+            📂views
+                📄view1.js
+                📄view2.js
+                📄View.js
+            📄config.js
+            📄controller.js
+            📄helpers.js
+            📄model.js
+        📂saas
+    📄index.html
+    📄package.json
+    🌐README.md
+```
+
+in this structure, -> dist folder will contain the complete project in a single directory after parcel is done bundling
+
+-> node_modules will comprise of all the imported npm modules
+
+-> src folder contains all th efiles for the project
+
+-> img will have all the iamges
+
+-> js folder will have the modules
+
+-> sass will have css and sass files
+
+-> view folder will have various VIEWS
+
+-> package.json will contain the settings for the project for npm
+
+### Project working points
+
+=) controller.js : Application Logic( controls how the complete application will work and will direct MODEL and VIEW on how to work, also will use the publisher subscriber patter to attatch event handlers from view)
+
+-> conttoller.js imports from all views and model.js too and also needs regenerator-runtime since its uses async and core-js/stable too
+
+-> contains init function that is responsible for attatching the event handler with the help of function persent in view. init() is evoked immediately.
+
+-> contains variour functions that call functions in model and view in order to change logic or ui.
+
+-> all an all controller calls off the strings and has the order in which crutial functions are called.
+
+-> also NOTE: error handling is done here.
+
+=) model.js : logic code, storing data about front end and the data fetched from server, changes to me made in view start to occur from here
+
+-> contains various functions that include making api request along with storking data that is on display on the page !.
+
+-> IMPORTANT : will contain an object called state that will store data that is to be sent to VIEW using CONTROLLER. this object will be exported.
+
+-> contains the handler function, that will when DOM event is evoked, call the updateData function in MODEL and renderChanges in the VIEW.
+
+-> has logical functions that work on the page data eg. data fetched from the api
+
+-> can also make changes to data stored after getting it from the api.
+
+=) various views : visible to viewer logic like DOM, adding html, removing html, making changes to html and css.
+
+-> various sections of a page need to be changed and we can distribute the changes to be made there in various modules too.
+
+-> these modules will have a class with thhe various methods and their object will be exported for the CONTROLLER to use.
+
+-> will also include methods that attatch DOM manipulators that will be evoked by the CONTROLLER.
+
+-> there will be a parent View.js module, this will contain common to all view modules method slike, render(data), the \_parentElement attribute etc.
+
+=) helpers.js :
+
+-> will contain various methods that are needed by any modules and are just helper
+
+=) config.js :
+
+-> includes global variables that might be needed by all the modules and contain common data that might be changed.
+
+#### Important Observations :
+
+-> datasets can be used very well to keep track of some things in the html itself and is pretty pog.(used in pagination to keep track of the page the button will lead to.)
+
+<hr>
+
+#### IMPORTANT : DOM UPDATING ALGOx
+
+```js
+const newDOM = document.createRange().createContextualFragment(newMarkup);
+const newElements = Array.from(newDOM.querySelectorAll("*"));
+const curElements = Array.from(this._parentElement.querySelectorAll("*"));
+
+newElements.forEach((newEl, i) => {
+    const curEl = curElements[i];
+    if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== "") {
+        curEl.textContent = newEl.textContent;
+    }
+});
+```
+
+QUESTION: why and what and how?
+ANSWER: DOM updating algorithm is used to find the elements that have changed state from original state and then only update them instead of any other dom element. it is done by following :
+
+-> upon triggering of event that changes the DOM, we take the newMarkup to be inserted, this markup is generated with some changes in the code and almost most of the code intact, then we convert that into a virtual dom so as to compare it with original DOm. we do this using =) document.createRange().createContextualFragment(newMarkup);. A virtual dom is a dom that is just in memory and not a part of DOM tree.
+
+-> then, we select all the elements from the virtual DOM using querySelectorAll('\*') and same for curElements. We do this so as to get all the seperate DOM elements so that we can compare them !.
+
+-> we convert the NodeList returned by querySelectorAll into an array.
+
+-> now we simply iterate over the two arrays comparing the respevtive index elements to find changed DOM
+
+-> IMPORTANT : the isse here is that, if changes are in an element, ALL ancistors of that element will reflect that change
+
+QUESTION : so how do we tackle that ?
+ANSWER : most of the time, the element that need changing will have certain properties that make them unique, eg, maybe they are ithe only elements that have text in them. in that case we can use the logic newEl.firstChild.nodeValue.trim() !== ""
+
+IMPORTANT =) nodeValue : if the Node type is document type, it returns null AND for the Node types like comments, text etc(NOTE: in a DOM tree everything from text to comment are in Nodes) it returns text HENCE newEl.firstChild.nodeValue.trim() !== "" if an element that has a child Node of text (eg a span containing text), this condition will satisfy and then we can change the textContent of that newEL !!!!! THIS IS POG AF.
+
+=) newEl.firstChild.nodeValue.trim() !== "" is the logic to find an element that has its first child as plain text NODE!!!!
+
+###### =) FormData() :
+
+we can use =) [...new FormData(formDomElement)]; this will give us all the form elements in an array format(array with tuple of arrays), this is because FormData actually gives us an object and then its better to break it into an array using destructuring.
+
+```js
+formElement.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = [...new FormData(this)];
+});
+```
+
+in the above we passed in this, since in an event handler callback function, this will point to the element itself.
+
+#### POST request in fetch API
+
+=) fetch(url, {
+method : 'POST',
+headers : {
+'Content-Type' : 'application/json',
+},
+body: JSON.stringify(data);
+});
+
+The above is how we send JSON data to srvers, and the mentioned settings are compulsory.
+
+-> NOTE, we can await the fetch request as some servers will send back data :)(EG. forkify returns the data se POST as a response).
+
+-> check documentaion of API to find the post url or any other requirements
+
+### HISTORY API
+
+history API enables us to change URL # without reloading the webpage :O.
+
+=) window.history.pushState(state, title, URL); : state and title are not important and are set to null and '' respectively, however, the important part is the URL hashtag :)
+
+eg : window.history.pushState(null, '', `#${hashvalue}`);
+
+=) window.history.back() : This will work like we pressed the back button on browser window !!!
+
+#### JS DOCKS :
+
+we can create documentation :) and we can visit jsdoc.app for more info
+
+```js
+/**
+ * description text
+ * @param {daatatype} parameter name    description
+ * @param {datatype} [parameter = default value] description
+ * @returns {return type} description
+ * @this {type of this} description
+ * @author name
+ * @todo what needs to be done
+ */
+```
+
+eg. :
+
+```js
+/**
+ * Render the recieved  object
+ * @param {Object | Object[]}  data The data to be rendered (eg recipe)
+ * @param {boolean} [render = true] if false , create markup string instead of rendering to DOM
+ * @returns {undefined | string} A marrkup strin is returned if render = false
+ * @this {Object} View instance
+ * @author Preetam Singh
+ * @todo Finish impementation
+ */
+```
+
+-> here we seperate parameter datatype with | incase it can be of multiple types.
