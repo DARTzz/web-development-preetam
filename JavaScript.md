@@ -4151,6 +4151,15 @@ its kinda complex, since we pass options object inside option object and so onn.
 
 CHECK LEAFLET DOCUMENTATION FOR MORE !!!!
 
+IMPORTANT NOTE: make sure to include this css file in the html file : These are the styles of the map and map wont render properly without this.
+```html 
+<link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+        />
+        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+```
+
 #### WORKING WITH FORMS :
 
 =) formElement.focus(); calling this function makes the formElement active and cursor gets inside the form.
@@ -5775,3 +5784,5 @@ eg. :
 ```
 
 -> here we seperate parameter datatype with | incase it can be of multiple types.
+
+NOTE: its compulsory to use import Paradise from "url:./../../resources/music/Paradise.mp3"; url before including music files link

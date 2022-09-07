@@ -1059,3 +1059,33 @@ NOTE: bets practice is to make an object for Dynamic styles on a custom componen
 -> Next.js/Gatsby (Build over react :)
 -> Performance/ optimization
 -> More hooks (we looked at 2 of them only)
+
+##### updating videos in react 
+
+when working with react, one issue is that if we try and update the src of a video to change video dynamically, it does not refresh the video although it will change src value. in that case just simply change the key attribute of the video to refresh the video and force a rerender. 
+
+#### links in react 
+
+```js
+<a href="link1" target="_blank" onclick="preventDefault1”>
+```
+
+and the function should be :
+```js
+    const preventingDefault1 = function (event) {
+        event.preventDefault();
+        window.open(params.data.link, "_blank");
+    };
+```
+
+the issue arrises due to react not being able to call preventDefault function :)
+
+also her eis how to just simulate click and download by making an anchor in the click event 
+```js 
+const tempLink = document.createElement("a");
+        tempLink.href = resumeLol;
+        tempLink.download = "Preetam-Singh-Resume.gif";
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink); 
+```
