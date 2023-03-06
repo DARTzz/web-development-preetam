@@ -967,6 +967,8 @@ we know what this is, but, an argument object is an array that comprises of all 
 
 ### Scopes in JS
 
+NOTE: shadowing is when scope of an innner variable overtakes the scope of the outer variable with same name.
+
 there are three types of scopes :
 
 1.) Global
@@ -995,7 +997,7 @@ BUT we always use strict mode.
 
 **HOISTING :** makes some types of variabesl accessible/usable in the code before they are actually declared.
 
-what is looks like :
+what it looks like :
 "Variables lifted to the top of their scope".
 
 what it is : "Before execution, code is scanned for vaiables declaration, and for each vaiable, a new property is created in the variable encironment object."
@@ -4109,6 +4111,8 @@ Leaflet is an open source map library, that we can download or use its already h
 
 CDN : Content delivery network.(online hosted services.)
 
+http://leaflet-extras.github.io/leaflet-providers/preview/ : here are lots of maps :)
+
 we can even use NPM but for now.
 
 IMPORTANT NOTE: since our script makes use of other libraries, we must make sure to include scripts of libraries before script.js in html file !! this is because we want the library to be downloaded first. **Also use defer attribute in the script files.**
@@ -4152,12 +4156,13 @@ its kinda complex, since we pass options object inside option object and so onn.
 CHECK LEAFLET DOCUMENTATION FOR MORE !!!!
 
 IMPORTANT NOTE: make sure to include this css file in the html file : These are the styles of the map and map wont render properly without this.
-```html 
+
+```html
 <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-        />
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
 ```
 
 #### WORKING WITH FORMS :
